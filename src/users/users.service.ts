@@ -13,6 +13,13 @@ export class UsersService {
         data: createUserDto,
       });
     } catch (error) {
+      if (error.code === 'P2002') {
+        // Unique constraint failed for email field
+        throw new HttpException(
+          'Email address is already taken',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
       console.error('Error in create:', error);
       throw new HttpException(
         'Failed to create user',
